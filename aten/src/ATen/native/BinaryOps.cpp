@@ -202,6 +202,10 @@ Tensor add(const Tensor& self, Scalar other, Scalar alpha) {
   return native::add(self, wrapped_scalar_tensor(other), alpha);
 }
 
+Tensor add(Scalar other, const Tensor& self, Scalar alpha) {
+  return native::add(wrapped_scalar_tensor(other), self, alpha);
+}
+
 Tensor& add_(Tensor& self, Scalar other, Scalar alpha) {
   return native::add_(self, wrapped_scalar_tensor(other), alpha);
 }
@@ -210,6 +214,10 @@ Tensor& add_(Tensor& self, Scalar other, Scalar alpha) {
 // with sparse self input.
 Tensor div(const Tensor& self, Scalar other) {
   return self.div(wrapped_scalar_tensor(other)); // redispatch!
+}
+
+Tensor div(Scalar other, const Tensor& self) {
+  return wrapped_scalar_tensor(other).div(self); // redispatch!
 }
 
 // WARNING: This function, with a sparse self, is currently only
@@ -224,12 +232,20 @@ Tensor mul(const Tensor& self, Scalar other) {
   return native::mul(self, wrapped_scalar_tensor(other));
 }
 
+Tensor mul(Scalar other, const Tensor& self) {
+  return native::mul(self, other);
+}
+
 Tensor& mul_(Tensor& self, Scalar other) {
   return native::mul_(self, wrapped_scalar_tensor(other));
 }
 
 Tensor sub(const Tensor& self, Scalar other, Scalar alpha) {
   return native::sub(self, wrapped_scalar_tensor(other), alpha);
+}
+
+Tensor sub(Scalar other, const Tensor& self, Scalar alpha) {
+  return native::sub(wrapped_scalar_tensor(other), self, alpha);
 }
 
 Tensor& sub_(Tensor& self, Scalar other, Scalar alpha) {
@@ -332,6 +348,10 @@ Tensor& __ior__(Tensor& self, const Tensor& other) {
 
 Tensor& __ior__(Tensor& self, Scalar other) {
   return self.bitwise_or_(other);
+}
+
+Tensor rsub(Scalar other, const Tensor& self, Scalar alpha) {
+  return native::rsub(wrapped_scalar_tensor(other), self, alpha);
 }
 
 Tensor& bitwise_xor_out(Tensor& result, const Tensor& self, const Tensor& other) {
